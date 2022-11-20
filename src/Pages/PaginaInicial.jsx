@@ -1,15 +1,48 @@
 import styled from "styled-components"
 import { LogOutOutline } from 'react-ionicons'
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import { AddCircleOutline } from 'react-ionicons'
 import { RemoveCircleOutline } from 'react-ionicons'
+import React, { useEffect, useState } from "react"
+import { AuthContext } from "../providers/Auth"
+import axios from "axios"
 
 export default function PaginaLogin() {
+    let {user} = React.useContext(AuthContext);
+    let [transactions,setTransactions] = useState([]);
+    let navigate = useNavigate();
+    let [center,setCenter] = useState(true);
+    useEffect(()=>{
+        async function getTransactions(){
+            let transactions = await axios.get("http://localhost:5000/transactions",{
+                headers: {
+                    token: user.token + 'a'
+                }
+            })
+
+            if(transactions.data.length>0){
+                setCenter(false);
+            }
+            else{
+                setCenter(true);
+            }
+
+            setTransactions(transactions.data)
+        }
+        if(user.token!==""){
+            getTransactions();
+        }
+        else{
+            navigate("/");
+        }
+
+    },[user.token])
+
     return (
         <Container>
             <Header>
                 <h1>
-                    Olá, Fulano
+                    Olá, {user.name}
                 </h1>
                 <LogOutOutline
                     color={'#ffffff'} 
@@ -17,10 +50,18 @@ export default function PaginaLogin() {
                     width="30px"
                     />
             </Header>
-            <ContainerDados>
-                <h1>
-                    Não há registros de entrada ou saída
-                </h1>
+            <ContainerDados center={center}>
+                {
+                    transactions.length === 0 ? 
+                    <h1>
+                        Não há registros de entrada ou saída
+                    </h1>
+                    :
+                    <h1>
+                        {center ? 'a':'b'}
+                        Tem coisa dentro
+                    </h1>
+                }
             </ContainerDados>
             <Footer>
                 <Link>
@@ -62,8 +103,8 @@ const ContainerDados = styled.div`
     background: #FFFFFF;
     border-radius: 5px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: ${props => props.center ?  'center' : 'flex-start'};
+    align-items: ${props => props.center ?  'center' : 'flex-start'};
     h1{
         font-family: 'Raleway';
         font-style: normal;
