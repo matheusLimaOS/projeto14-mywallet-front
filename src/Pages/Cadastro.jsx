@@ -1,23 +1,41 @@
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import logo from "../assets/MyWallet.png"
+import { useState } from "react";
+import axios from "axios";
 
 export default function PaginaLogin() {
+    let [email,setEmail] = useState("");
+    let [password,setPassword] = useState("");
+    let [name,setName] = useState("");
+    let [confirmPassword,setConfirmPassword] = useState("");
+    let navigate = useNavigate();
     return (
         <Container>
             <ContainerForm>
                 <img alt="MyWallet" src={logo}/>
-                <form>
-                    <input placeholder="Nome" type="text"></input>
-                    <input placeholder="E-mail" type="email"></input>
-                    <input placeholder="Senha" type="password"></input>
-                    <input placeholder="Confirme a senha" type="password"></input>
+                <form onSubmit={(e)=>handleSubmit(e,name,email,password,confirmPassword,navigate)}>
+                    <input placeholder="Nome" value={name} onChange={(e)=>{setName(e.target.value)}} type="text"></input>
+                    <input placeholder="E-mail" value={email} onChange={(e)=>{setEmail(e.target.value)}} type="email"></input>
+                    <input placeholder="Senha" value={password} onChange={(e)=>{setPassword(e.target.value)}} type="password"></input>
+                    <input placeholder="Confirme a senha" value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}} type="password"></input>
                     <button>Cadastrar</button>
                     <Link to="/">Já tem uma conta? Entre agora!</Link>
                 </form>
             </ContainerForm>
         </Container>
     )
+}
+
+async function handleSubmit(e,name,email,password,confirmPassword,navigate){
+    e.preventDefault();
+    try{
+        await axios.post("http://localhost:5000/signup",{name,email,password,confirmPassword});
+        navigate("/");
+    }
+    catch(e){
+        alert(e.response.data);
+    }
 }
 
 const Container = styled.div`
