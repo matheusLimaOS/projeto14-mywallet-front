@@ -1,7 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PaginaLogin from "./Pages/Login";
+// import PaginaLogin from "./Pages/Login";
 import PaginaCadastro from "./Pages/Cadastro";
+import PaginaInicial from "./Pages/PaginaInicial"
 // import CadastroRegistro from "./Pages/CadastroRegistro"
 
 export default function App() {
@@ -10,7 +11,8 @@ export default function App() {
             <GlobalStyle/>  
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<PaginaLogin/>}></Route>
+                    <Route path="/" element={<PaginaInicial/>}></Route>
+                    {/* <Route path="/" element={<PaginaLogin/>}></Route> */}
                     <Route path="/cadastro" element={<PaginaCadastro/>}></Route>
                     {/* <Route path="/" element={<CadastroRegistro/>}></Route> */}
                 </Routes>
