@@ -35,7 +35,7 @@ async function handleSubmit(e,token,value,id,description,tipo,navigate){
     
     if(id){
         try{
-            await axios.put("http://localhost:5000/transactions",{_id:id,tipo,valor:parseFloat(value),descricao:description},{
+            await axios.put(`${process.env.REACT_APP_BASE_URL}/transactions`,{_id:id,tipo,valor:parseFloat(value),descricao:description},{
                 headers: {
                     token: token
                 }
@@ -49,7 +49,7 @@ async function handleSubmit(e,token,value,id,description,tipo,navigate){
     }
     else{
         try{
-            await axios.post("http://localhost:5000/transactions",{tipo,descricao:description,valor:parseFloat(value)},{
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/transactions`,{tipo,descricao:description,valor:parseFloat(value)},{
                 headers: {
                     token: token
                 }

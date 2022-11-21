@@ -27,7 +27,7 @@ async function excluir(_id,token,deletou,setDeletou){
 
     if(veri){
         try{
-            await axios.delete("http://localhost:5000/transactions/"+_id,{
+            await axios.delete(`${process.env.REACT_APP_BASE_URL}/transactions/${_id}`,{
                 headers: {
                     token: token
                 }

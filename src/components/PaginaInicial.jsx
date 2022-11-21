@@ -17,7 +17,7 @@ export default function PaginaLogin() {
     let [deletou,setDeletou] = useState(true);
     useEffect(()=>{
         async function getTransactions(){
-            let transactions = await axios.get("http://localhost:5000/transactions",{
+            let transactions = await axios.get(`${process.env.REACT_APP_BASE_URL}/transactions`,{
                 headers: {
                     token: user.token
                 }

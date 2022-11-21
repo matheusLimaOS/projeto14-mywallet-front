@@ -30,7 +30,7 @@ async function handleSubmit(e,email,password,setUser,navigate){
     e.preventDefault();
 
     try{
-        let post = await axios.post("http://localhost:5000/signin",{email,password});
+        let post = await axios.post(`${process.env.REACT_APP_BASE_URL}/signin`,{email,password});
         console.log(post.data);
         setUser(post.data);
         navigate("/Home");

@@ -30,7 +30,7 @@ export default function PaginaLogin() {
 async function handleSubmit(e,name,email,password,confirmPassword,navigate){
     e.preventDefault();
     try{
-        await axios.post("http://localhost:5000/signup",{name,email,password,confirmPassword});
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`,{name,email,password,confirmPassword});
         navigate("/");
     }
     catch(e){
