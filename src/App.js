@@ -1,10 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./providers/Auth";
-import PaginaLogin from "./Pages/Login";
-import PaginaCadastro from "./Pages/Cadastro";
-import PaginaInicial from "./Pages/PaginaInicial"
-// import CadastroRegistro from "./Pages/CadastroRegistro"
+import PaginaLogin from "./components/Login";
+import PaginaCadastro from "./components/Cadastro";
+import PaginaInicial from "./components/PaginaInicial"
+import CadastroRegistro from "./components/CadastroRegistro"
 
 export default function App() {
     return (
@@ -16,7 +16,7 @@ export default function App() {
                         <Route path="/Home" element={<PaginaInicial/>}></Route>
                         <Route path="/" element={<PaginaLogin />}></Route>
                         <Route path="/cadastro" element={<PaginaCadastro />}></Route>
-                        {/* <Route path="/" element={<CadastroRegistro/>}></Route> */}
+                        <Route path="/cadastroRegistro" element={<CadastroRegistro/>}></Route>
                     </Routes>
                 </BrowserRouter>
             </AuthProvider>
@@ -25,9 +25,8 @@ export default function App() {
     )
 }
 
-
-
 const GlobalStyle = createGlobalStyle`
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700&family=Righteous&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
     html, body, div, span, applet, object, iframe,
     h1, h2, h3, h4, h5, h6, p, blockquote, pre,
     a, abbr, acronym, address, big, cite, code,

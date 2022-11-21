@@ -1,40 +1,43 @@
-import { Link,useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import logo from "../assets/MyWallet.png"
-import { useState } from "react";
-import axios from "axios";
+import { Link,useNavigate } from "react-router-dom"
+import React from "react"
+import { AuthContext } from "../providers/Auth"
+import { useState } from "react"
+import axios from "axios"
 
 export default function PaginaLogin() {
     let [email,setEmail] = useState("");
     let [password,setPassword] = useState("");
-    let [name,setName] = useState("");
-    let [confirmPassword,setConfirmPassword] = useState("");
+    let {setUser} = React.useContext(AuthContext);
     let navigate = useNavigate();
     return (
         <Container>
             <ContainerForm>
                 <img alt="MyWallet" src={logo}/>
-                <form onSubmit={(e)=>handleSubmit(e,name,email,password,confirmPassword,navigate)}>
-                    <input placeholder="Nome" value={name} onChange={(e)=>{setName(e.target.value)}} type="text"></input>
+                <form onSubmit={(e)=>handleSubmit(e,email,password,setUser,navigate)}>
                     <input placeholder="E-mail" value={email} onChange={(e)=>{setEmail(e.target.value)}} type="email"></input>
                     <input placeholder="Senha" value={password} onChange={(e)=>{setPassword(e.target.value)}} type="password"></input>
-                    <input placeholder="Confirme a senha" value={confirmPassword} onChange={(e)=>{setConfirmPassword(e.target.value)}} type="password"></input>
-                    <button>Cadastrar</button>
-                    <Link to="/">Já tem uma conta? Entre agora!</Link>
+                    <button>Entrar</button>
+                    <Link to="/cadastro">Primeira vez? Cadastre-se!</Link>
                 </form>
             </ContainerForm>
         </Container>
     )
 }
 
-async function handleSubmit(e,name,email,password,confirmPassword,navigate){
+async function handleSubmit(e,email,password,setUser,navigate){
     e.preventDefault();
+
     try{
-        await axios.post("http://localhost:5000/signup",{name,email,password,confirmPassword});
-        navigate("/");
+        let post = await axios.post("http://localhost:5000/signin",{email,password});
+
+        setUser(post.data);
+        navigate("/Home");
     }
     catch(e){
-        alert(e.response.data);
+        console.log(e.response.data)
+        window.alert("Email ou senha incorretos");
     }
 }
 
@@ -76,7 +79,7 @@ const ContainerForm = styled.div`
             margin-bottom: 13px;
             border: none;
 
-            font-family: 'Raleway';
+            font-family: 'Raleway',sans-serif;
             font-style: normal;
             font-weight: 400;
             font-size: 20px;
@@ -85,7 +88,7 @@ const ContainerForm = styled.div`
             color: #000000;
         }
         button{
-            font-family: 'Raleway';
+            font-family: 'Raleway',sans-serif;
             font-style: normal;
             font-weight: 700;
             font-size: 20px;
@@ -101,7 +104,7 @@ const ContainerForm = styled.div`
         a{
             text-align: center;
             text-decoration: none;
-            font-family: 'Raleway';
+            font-family: 'Raleway',sans-serif;
             font-style: normal;
             font-weight: 700;
             font-size: 15px;
@@ -111,3 +114,6 @@ const ContainerForm = styled.div`
         }
     }
 `
+//let navigate = useNavigate();
+//navigate('/sucesso', { state: { ids, compradores, selecionados, assentos } })
+//const location = useLocation();
