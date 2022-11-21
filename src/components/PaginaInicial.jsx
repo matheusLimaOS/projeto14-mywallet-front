@@ -14,6 +14,7 @@ export default function PaginaLogin() {
     let navigate = useNavigate();
     let [center,setCenter] = useState(true);
     let [saldo,setSaldo] = useState(0);
+    let [deletou,setDeletou] = useState(true);
     useEffect(()=>{
         async function getTransactions(){
             let transactions = await axios.get("http://localhost:5000/transactions",{
@@ -48,7 +49,7 @@ export default function PaginaLogin() {
             navigate("/");
         }
         // eslint-disable-next-line
-    },[user.token])
+    },[user.token,deletou])
 
     return (
         <Container>
@@ -70,13 +71,13 @@ export default function PaginaLogin() {
                     </h1>
                     :
                     transactions.map((transaction,index)=>{
-                        return <Transação key={transaction._id} transaction={transaction} ></Transação>
+                        return <Transação key={transaction._id} deletou={deletou} setDeletou={setDeletou} transaction={transaction} ></Transação>
                     })
                 }
                 <FooterDados mostrar={center} cor={saldo>=0}>
                     <h6>SALDO:</h6>
 
-                    <h5>{saldo}</h5>
+                    <h5>{saldo.toFixed(2)}</h5>
                 </FooterDados>
             </ContainerDados>
             <Footer>

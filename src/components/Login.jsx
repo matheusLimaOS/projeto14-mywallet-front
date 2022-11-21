@@ -31,7 +31,7 @@ async function handleSubmit(e,email,password,setUser,navigate){
 
     try{
         let post = await axios.post("http://localhost:5000/signin",{email,password});
-
+        console.log(post.data);
         setUser(post.data);
         navigate("/Home");
     }

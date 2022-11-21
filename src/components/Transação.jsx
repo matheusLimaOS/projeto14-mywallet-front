@@ -1,27 +1,71 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import React from "react";
+import { AuthContext } from "../providers/Auth";
 
 export default function Transação(props) {
+    let {user} = React.useContext(AuthContext);
     let {data,descricao,valor,tipo,_id} = props.transaction;
     let navigate = useNavigate();
     return (
-        <Container onClick={()=>{handleClick(descricao,valor,tipo,_id,navigate)}}>
-            <Data>{data}</Data>
-            <Descricao>{descricao}</Descricao>
-            <Valor cor={tipo==='E'}>{valor}</Valor>
+        <Container>
+            <div onClick={()=>{handleClick(descricao,valor,tipo,_id,navigate)}}>
+                <Data>{data}</Data>
+                <Descricao>{descricao}</Descricao>
+            </div>
+            <div>
+                <Valor cor={tipo==='E'}>{valor}</Valor>
+                <Excluir onClick={()=>{excluir(_id,user.token,props.deletou,props.setDeletou)}}>X</Excluir>
+            </div>
         </Container>
     )
 }
 
+async function excluir(_id,token,deletou,setDeletou){
+    let veri = window.confirm("Deseja realmente excluir o registro?");
+
+    if(veri){
+        try{
+            await axios.delete("http://localhost:5000/transactions/"+_id,{
+                headers: {
+                    token: token
+                }
+            })
+
+            setDeletou(!deletou);
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
+}
 function handleClick(descricao,valor,tipo,_id,navigate){
     navigate('/cadastroRegistro', { state: { valor,descricao,tipo,id:_id } })
 }
+
+
+const Excluir = styled.button`
+    font-family: 'Raleway',sans-serif;
+    right: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    border: none;
+    background-color: white;
+    color: #C6C6C6;
+`
 
 const Container = styled.div`
     display: flex;
     width: 92%;
     padding-top: 8px;
-    position: relative;
+    justify-content: space-between;
+    div{
+        display: flex;
+    }
 `
 
 const Data = styled.p`
@@ -52,8 +96,8 @@ const Valor = styled.p`
     font-size: 16px;
     line-height: 19px;
     text-align: right;
-    position: absolute;
     right: 0;
+    margin-right: 5px;
 
     color: ${props => props.cor ?  '#03AC00' : '#C70000'};
 `
